@@ -36,8 +36,13 @@ body {
 }
 
 /* Custom page footer */
-.footer.well {
+.footer {
   margin-bottom: 0px;
+  margin-top: 20px;
+  p {
+    line-height: 50px;
+    margin: 0;
+  }
 }
 
 .container-narrow > hr {
