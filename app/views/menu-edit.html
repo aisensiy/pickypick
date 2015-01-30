@@ -7,7 +7,7 @@
           <div class="well">
             <h4 class="title">[{{dish.restaurant}}] {{dish.name}}</h4>
             <p class="price">￥{{dish.price}}</p>
-            <button class="btn btn-primary btn-sm">移过去</button>
+            <button class="btn btn-primary btn-sm" ng-click="copy_to_menu(dish)" ng-disabled="selected[dish.name]">移过去</button>
           </div>
         </li>
       </ul>
@@ -17,28 +17,29 @@
     <h2>编辑菜单</h2>
     <div class="selected-dishes-panel">
       <ul class='list-unstyled'>
-        <li ng-repeat='dish in dishes'>
+        <li ng-repeat='dish in menu'>
           <div class="well">
             <h4 class="title">[{{dish.restaurant}}] {{dish.name}}</h4>
             <p class="price">￥{{dish.price}}</p>
-            <button class="btn btn-default btn-sm"><i class="glyphicon glyphicon-trash"></i></button>
+            <button class="btn btn-default btn-sm"ng-click="remove_dish(dish)"><i class="glyphicon glyphicon-trash"></i></button>
           </div>
         </li>
       </ul>
     </div>
-    <form action="">
+    <button class="btn btn-primary pull-right">完成了</button>
+    <form ng-submit="add_new_dish()">
       <legend>添加新菜品</legend>
       <div class="form-group">
         <label for="dishRestaurant">店名</label>
-        <input type="text" name="dishRestaurant" id="dishRestaurant" value="" class="form-control" />
+        <input ng-model="new_dish.restaurant" type="text" name="dishRestaurant" id="dishRestaurant" value="" class="form-control" />
       </div>
       <div class="form-group">
         <label for="dishName">菜品名称</label>
-        <input type="text" name="dishName" id="dishName" value="" class="form-control" />
+        <input ng-model="new_dish.name" type="text" name="dishName" id="dishName" value="" class="form-control" />
       </div>
       <div class="form-group">
         <label for="dishPrice">价格</label>
-        <input type="number" name="dishPrice" id="dishPrice" value="" class="form-control" />
+        <input ng-model="new_dish.price" type="number" name="dishPrice" id="dishPrice" value="" class="form-control" />
       </div>
       <button class="btn btn-primary pull-right" type="submit">保存</button>
     </form>

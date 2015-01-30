@@ -32,4 +32,31 @@ angular.module('pickypickApp')
       }
     ];
     $scope.dishes = dishes;
+    $scope.menu = [];
+    $scope.new_dish = {};
+
+    $scope.selected = {};
+
+    $scope.add_new_dish = function() {
+      $scope.menu.push($scope.new_dish);
+      $scope.new_dish = {};
+    };
+
+    $scope.remove_dish = function(dish) {
+      for (var i = 0; i < $scope.menu.length; i++) {
+        if (dish == $scope.menu[i]) {
+          $scope.menu.splice(i, 1);
+          delete $scope.selected[dish.name];
+          break;
+        }
+      }
+    };
+
+    $scope.copy_to_menu = function(dish) {
+      if ($scope.selected[dish.name]) {
+        return;
+      }
+      $scope.menu.push(Object.create(dish));
+      $scope.selected[dish.name] = true;
+    };
   });
