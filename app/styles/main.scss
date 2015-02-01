@@ -91,3 +91,15 @@ body {
     border-bottom: 0;
   }
 }
+
+.btn.rounded {
+  border-radius: 40px;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+}
+
+.count {
+  width: 2em;
+  text-align: center;
+}
