@@ -27,6 +27,10 @@ angular
         templateUrl: 'views/menu-edit.html',
         controller: 'MenuEditCtrl'
       })
+      .when('/reservation', {
+        templateUrl: 'views/reservation.html',
+        controller: 'ReservationCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });
