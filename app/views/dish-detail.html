@@ -1,1 +1,17 @@
-<p>This is the dish_detail view.</p>
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <h2>点餐详情</h2>
+    <div class="check-dishes-panel">
+      <ul class="list-unstyled">
+        <li ng-repeat="dish in dishes">
+        <div class="well">
+          <h4 class="title">[{{dish.restaurant}}] {{dish.name}}</h4>
+          <p class="price">￥{{dish.price}}</p>
+          <p>点餐人: {{dish.username}}</p>
+          <p>付款了吗 <input type="checkbox" name="" id="" /></p>
+        </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
