@@ -31,6 +31,10 @@ angular
         templateUrl: 'views/reservation.html',
         controller: 'ReservationCtrl'
       })
+      .when('/dish-stat', {
+        templateUrl: 'views/dish-stat.html',
+        controller: 'DishStatCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });
