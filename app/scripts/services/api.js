@@ -66,6 +66,45 @@ api.factory('MenuAPI', function() {
       }
       console.log('remove dish in menu');
       callback && callback();
+    },
+    'query': function(menu_id, callback) {
+      console.log('fetch menu with id');
+      var menu = {
+        id: 'menu_' + +new Date(),
+        dishes: [
+          {
+            'name': '香汁排骨饭汤套餐',
+            'price': 29.5,
+            'restaurant': '真功夫'
+          },
+          {
+            'name': '冬菇鸡腿饭汤套餐',
+            'price': 27,
+            'restaurant': '真功夫'
+          },
+          {
+            'name': '鱼香茄子饭汤套餐',
+            'price': 20,
+            'restaurant': '真功夫'
+          },
+          {
+            'name': '排骨拼鸡腿肉饭汤套餐',
+            'price': 30.5,
+            'restaurant': '真功夫'
+          }
+        ]
+      };
+      callback && callback(menu);
+    }
+  }
+});
+api.factory('OrderAPI', function() {
+  return {
+    create: function(order, callback) {
+      console.log('create order');
+      console.log(order);
+      order.id = 'order_' + +new Date();
+      callback && callback(order);
     }
   }
 });
