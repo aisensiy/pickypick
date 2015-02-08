@@ -1,28 +1,28 @@
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
     <h2>点餐吧</h2>
-    <form>
+    <form ng-submit="submit_order(order)">
       <div class="check-dishes-panel">
         <ul class="list-unstyled">
           <li ng-repeat="dish in dishes">
           <div class="well">
             <h4 class="title">[{{dish.restaurant}}] {{dish.name}}</h4>
             <p class="price">￥{{dish.price}}</p>
-            <button class="btn btn-default rounded" ng-click="count_plus(dish)"><i class="glyphicon glyphicon-plus" ></i></button>
+            <a class="btn btn-default rounded" ng-click="count_plus(dish)"><i class="glyphicon glyphicon-plus" ></i></a>
             <input type="text" class="count" value="0" ng-model="dish.count">
-            <button class="btn btn-default rounded" ng-click="count_minus(dish)"><i class="glyphicon glyphicon-minus"></i></button>
+            <a class="btn btn-default rounded" ng-click="count_minus(dish)"><i class="glyphicon glyphicon-minus"></i></a>
           </div>
           </li>
         </ul>
         <div class="form-group">
           <label for="name">名字</label>
-          <input id="" type="text" name="name" class="form-control" />
+          <input ng-model="order.name" id="" type="text" name="name" class="form-control" />
         </div>
         <div class="form-group">
           <label for="memo">备注</label>
-          <input type="text" name="memo" id="memo" value="" class="form-control" />
+          <input type="text" name="memo" id="memo" value="" class="form-control" ng-model="order.memo" />
         </div>
-        <button class="btn btn-primary pull-right">完成</button>
+        <input class="btn btn-primary pull-right" type="submit" value="完成" />
       </div>
     </form>
   </div>
