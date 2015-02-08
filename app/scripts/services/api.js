@@ -160,6 +160,9 @@ api.factory('OrderAPI', function() {
         }
       ];
       callback && callback(dishes);
+    },
+    update: function(order) {
+      console.log('update order');
     }
   }
 });

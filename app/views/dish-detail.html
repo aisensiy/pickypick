@@ -8,7 +8,7 @@
           <h4 class="title">[{{dish.restaurant}}] {{dish.name}}</h4>
           <p class="price">￥{{dish.price}}</p>
           <p>点餐人: {{dish.username}}</p>
-          <p>付款了吗 <input type="checkbox" name="" id="" /></p>
+          <p>付款了吗 <input ng-model="dish.paid" type="checkbox" name="" id="" ng-click="update_order_pay_info(dish)" /></p>
         </div>
         </li>
       </ul>

@@ -13,4 +13,7 @@ angular.module('pickypickApp')
     OrderAPI.order_list('123', function(dishes) {
       $scope.dishes = dishes;
     });
+    $scope.update_order_pay_info = function(dish) {
+      OrderAPI.update(dish);
+    };
   }]);
