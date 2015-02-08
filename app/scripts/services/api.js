@@ -11,6 +11,7 @@ var api = angular.module('API', []);
 api.run(function () {
     AV.initialize("s7absgjlh4excjqd1arsfcn89baq9at1i6nckwy46kdek17g", "gs53oj7hti92uxr13mgzi47v9nv7hexjrc3982dqs4d3iq6b");
     console.log('initialize av api');
+    window.Menu = AV.Object.extend('Menu');
 });
 api.factory('DishAPI', function() {
   return {
@@ -79,32 +80,14 @@ api.factory('MenuAPI', function() {
     },
     'query': function(menu_id, callback) {
       console.log('fetch menu with id');
-      var menu = {
-        id: 'menu_' + +new Date(),
-        dishes: [
-          {
-            'name': '香汁排骨饭汤套餐',
-            'price': 29.5,
-            'restaurant': '真功夫'
-          },
-          {
-            'name': '冬菇鸡腿饭汤套餐',
-            'price': 27,
-            'restaurant': '真功夫'
-          },
-          {
-            'name': '鱼香茄子饭汤套餐',
-            'price': 20,
-            'restaurant': '真功夫'
-          },
-          {
-            'name': '排骨拼鸡腿肉饭汤套餐',
-            'price': 30.5,
-            'restaurant': '真功夫'
-          }
-        ]
-      };
-      callback && callback(menu);
+      var query = new AV.Query(Menu);
+      query.get(menu_id, {
+        success: function(menu_object) {
+          var plain_menu = JSON.parse(JSON.stringify(menu_object));
+          plain_menu.dishes = JSON.parse(plain_menu.dishes);
+          callback && callback(plain_menu);
+        }
+      });
     }
   }
 });
