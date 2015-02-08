@@ -15,18 +15,20 @@
   </div>
   <div class="col-md-6">
     <h2>编辑菜单</h2>
-    <div class="selected-dishes-panel">
-      <ul class='list-unstyled'>
-        <li ng-repeat='dish in menu.dishes'>
+    <form ng-submit="save_menu()">
+      <div class="selected-dishes-panel">
+        <ul class='list-unstyled'>
+          <li ng-repeat='dish in menu.dishes'>
           <div class="well">
             <h4 class="title">[{{dish.restaurant}}] {{dish.name}}</h4>
             <p class="price">￥{{dish.price}}</p>
             <button class="btn btn-default btn-sm"ng-click="remove_dish(dish)"><i class="glyphicon glyphicon-trash"></i></button>
           </div>
-        </li>
-      </ul>
-    </div>
-    <button class="btn btn-primary pull-right">完成了</button>
+          </li>
+        </ul>
+      </div>
+      <input class="btn btn-primary pull-right" type="submit" value="完成了" />
+    </form>
     <form ng-submit="add_new_dish()">
       <legend>添加新菜品</legend>
       <div class="form-group">

@@ -14,10 +14,14 @@ api.run(function () {
 });
 api.factory('DishAPI', function() {
   return {
-    'create': function(jsondata, callback) {
+    'create': function(dish, callback) {
+      var new_dish = AV.Object.new('Dish');
       console.log('create the dish and return it');
-      jsondata['id'] = 'new_dish_' + +new Date();
-      callback && callback(jsondata);
+      new_dish.save(dish, {
+        success: function(dish_object) {
+          callback && callback(JSON.parse(JSON.stringify(dish_object)));
+        }
+      });
     },
     'query': function(callback) {
       var dishes = [
@@ -48,9 +52,15 @@ api.factory('DishAPI', function() {
 });
 api.factory('MenuAPI', function() {
   return {
-    'create': function(callback) {
-      console.log('create a new menu');
-      callback && callback({'id': 'new_menu_' + +new Date(), 'dishes': []})
+    'create': function(menu, callback) {
+      var new_menu = AV.Object.new('Menu');
+      console.log('create the menu and return it');
+      new_menu.set('dishes', JSON.stringify(menu.dishes));
+      new_menu.save(null, {
+        success: function(menu_object) {
+          callback && callback(JSON.parse(JSON.stringify(menu_object)));
+        }
+      });
     },
     'add_dish_to_menu': function(menu, dish, callback) {
       console.log('add dish to menu');
