@@ -8,8 +8,8 @@
  * Controller of the pickypickApp
  */
 angular.module('pickypickApp')
-  .controller('DishStatCtrl', ['$scope', 'OrderAPI', function ($scope, OrderAPI) {
-    OrderAPI.order_list('123', function(dishes) {
+  .controller('DishStatCtrl', ['$scope', 'OrderAPI', '$routeParams', function ($scope, OrderAPI, $routeParams) {
+    OrderAPI.order_list($routeParams.menu_id, function(dishes) {
       $scope.dish_stat = {};
       $scope.total_price = 0;
       angular.forEach(dishes, function(dish, index) {

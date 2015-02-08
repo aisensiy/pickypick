@@ -28,15 +28,15 @@ angular
         templateUrl: 'views/menu-edit.html',
         controller: 'MenuEditCtrl'
       })
-      .when('/reservation', {
+      .when('/reservation/:menu_id', {
         templateUrl: 'views/reservation.html',
         controller: 'ReservationCtrl'
       })
-      .when('/dish-stat', {
+      .when('/dish-stat/:menu_id', {
         templateUrl: 'views/dish-stat.html',
         controller: 'DishStatCtrl'
       })
-      .when('/dish-detail', {
+      .when('/dish-detail/:menu_id', {
         templateUrl: 'views/dish-detail.html',
         controller: 'DishDetailCtrl'
       })
