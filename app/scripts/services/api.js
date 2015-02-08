@@ -101,7 +101,7 @@ api.factory('OrderAPI', function() {
       parent_menu.id = order.menu.objectId;
 
       var new_order = new Order();
-      new_order.set('parent', parent_menu);
+      new_order.set('menu', parent_menu);
       new_order.set('dishes', JSON.stringify(order.menu.dishes))
       new_order.set('name', order.name);
       new_order.set('memo', order.memo);
@@ -113,58 +113,22 @@ api.factory('OrderAPI', function() {
     },
     order_list: function(menu_id, callback) {
       console.log('fetch order list from ' + menu_id);
-      var dishes = [
-        {
-          'name': '香汁排骨饭汤套餐',
-          'price': 29.5,
-          'restaurant': '真功夫',
-          'username': '燃辉',
-          'memo': ''
-        },
-        {
-          'name': '香汁排骨饭汤套餐',
-          'price': 29.5,
-          'restaurant': '真功夫',
-          'username': '团长',
-          'memo': '不要辣'
-        },
-        {
-          'name': '冬菇鸡腿饭汤套餐',
-          'price': 27,
-          'restaurant': '真功夫',
-          'username': '汤川学',
-          'memo': '不要香菜'
-        },
-        {
-          'name': '鱼香茄子饭汤套餐',
-          'price': 20,
-          'restaurant': '真功夫',
-          'username': '书记',
-          'memo': '多点辣'
-        },
-        {
-          'name': '排骨拼鸡腿肉饭汤套餐',
-          'price': 30.5,
-          'restaurant': '真功夫',
-          'username': '尧姐',
-          'memo': '不要韭菜'
-        },
-        {
-          'name': '排骨拼鸡腿肉饭汤套餐',
-          'price': 30.5,
-          'restaurant': '真功夫',
-          'username': '姐夫',
-          'memo': '不要辣'
-        },
-        {
-          'name': '排骨拼鸡腿肉饭汤套餐',
-          'price': 30.5,
-          'restaurant': '真功夫',
-          'username': '缝哥',
-          'memo': '不要辣'
+      var parent_menu = new Menu();
+      parent_menu.id = menu_id;
+
+      var query = new AV.Query(Order);
+      query.equalTo('menu', parent_menu);
+      query.find({
+        success: function(orders) {
+          var plain_orders = [];
+          angular.forEach(orders, function(order) {
+            var plain_order = JSON.parse(JSON.stringify(order));
+            plain_order.dishes = JSON.parse(plain_order.dishes);
+            plain_orders.push(plain_order);
+          });
+          callback && callback(plain_orders);
         }
-      ];
-      callback && callback(dishes);
+      })
     },
     update: function(order) {
       console.log('update order');
