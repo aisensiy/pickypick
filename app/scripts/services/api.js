@@ -12,6 +12,7 @@ api.run(function () {
     AV.initialize("s7absgjlh4excjqd1arsfcn89baq9at1i6nckwy46kdek17g", "gs53oj7hti92uxr13mgzi47v9nv7hexjrc3982dqs4d3iq6b");
     console.log('initialize av api');
     window.Menu = AV.Object.extend('Menu');
+    window.Order = AV.Object.extend('Order');
 });
 api.factory('DishAPI', function() {
   return {
@@ -95,9 +96,20 @@ api.factory('OrderAPI', function() {
   return {
     create: function(order, callback) {
       console.log('create order');
-      console.log(order);
-      order.id = 'order_' + +new Date();
-      callback && callback(order);
+
+      var parent_menu = new Menu();
+      parent_menu.id = order.menu.objectId;
+
+      var new_order = new Order();
+      new_order.set('parent', parent_menu);
+      new_order.set('dishes', JSON.stringify(order.menu.dishes))
+      new_order.set('name', order.name);
+      new_order.set('memo', order.memo);
+      new_order.save(null, {
+        success: function(order_object) {
+          callback && callback(order_object);
+        }
+      });
     },
     order_list: function(menu_id, callback) {
       console.log('fetch order list from ' + menu_id);
