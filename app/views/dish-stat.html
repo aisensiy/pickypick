@@ -4,9 +4,9 @@
     <div class="check-dishes-panel">
       <ul class="list-unstyled">
         <li ng-repeat="(name, dishes) in dish_stat">
-        <div class="well">
-          <h4 class="title">[{{dishes[0].restaurant}}] {{dishes[0].name}} x {{dishes.length}}</h4>
-          <p class="price">￥{{dishes[0].price * dishes.length}}</p>
+        <div class="well clearfix">
+          <p class="title pull-left">[{{dishes[0].restaurant}}] {{dishes[0].name}} x {{dishes.length}}</h4>
+          <p class="price pull-right">￥{{dishes[0].price * dishes.length}}</p>
         </div>
         </li>
       </ul>
