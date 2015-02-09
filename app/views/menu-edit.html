@@ -18,7 +18,10 @@
     <h2>编辑菜单</h2>
     <form ng-submit="save_menu()">
       <div class="selected-dishes-panel">
-        <ul class='list-unstyled'>
+        <div class="well text-center" ng-hide="menu.dishes.length">
+          菜单还是空的
+        </div>
+        <ul class='list-unstyled' ng-show="menu.dishes.length">
           <li ng-repeat='dish in menu.dishes'>
           <div class="well clearfix">
             <p class="title pull-left">[{{dish.restaurant}}] {{dish.name}}</p>
