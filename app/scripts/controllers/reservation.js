@@ -11,10 +11,12 @@ angular.module('pickypickApp')
   .controller('ReservationCtrl', ['$scope', 'MenuAPI', 'OrderAPI', '$routeParams', function ($scope, MenuAPI, OrderAPI, $routeParams) {
     $scope.order = {};
     MenuAPI.query($routeParams.menu_id, function(menu) {
-      $scope.menu = menu;
-      $scope.dishes = menu.dishes;
-      $scope.dishes.forEach(function(dish) {
-        dish.count = 0;
+      $scope.$apply(function() {
+        $scope.menu = menu;
+        $scope.dishes = menu.dishes;
+        $scope.dishes.forEach(function(dish) {
+          dish.count = 0;
+        });
       });
     });
 

@@ -3,12 +3,16 @@
     <h2>点餐详情</h2>
     <div class="check-dishes-panel">
       <ul class="list-unstyled">
-        <li ng-repeat="dish in dishes">
+        <li ng-repeat="order in orders">
         <div class="well">
-          <h4 class="title">[{{dish.restaurant}}] {{dish.name}}</h4>
-          <p class="price">￥{{dish.price}}</p>
-          <p>点餐人: {{dish.username}}</p>
-          <p>付款了吗 <input ng-model="dish.paid" type="checkbox" name="" id="" ng-click="update_order_pay_info(dish)" /></p>
+          <p>点餐人: {{order.name}}</p>
+          <ul class="list-unstyled">
+            <li ng-repeat="dish in order.dishes" class="clearfix">
+              <p class="title pull-left">[{{dish.restaurant}}] {{dish.name}}</p>
+              <p class="price pull-right">￥{{dish.price}}</p>
+            </li>
+          </ul>
+          <p>付款了吗 <input ng-model="order.paid" type="checkbox" name="" id="" ng-click="update_order_pay_info(order)" /></p>
         </div>
         </li>
       </ul>

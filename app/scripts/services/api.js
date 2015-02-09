@@ -11,13 +11,19 @@ var api = angular.module('API', []);
 api.run(function () {
     AV.initialize("s7absgjlh4excjqd1arsfcn89baq9at1i6nckwy46kdek17g", "gs53oj7hti92uxr13mgzi47v9nv7hexjrc3982dqs4d3iq6b");
     console.log('initialize av api');
+    window.Menu = AV.Object.extend('Menu');
+    window.Order = AV.Object.extend('Order');
 });
 api.factory('DishAPI', function() {
   return {
-    'create': function(jsondata, callback) {
+    'create': function(dish, callback) {
+      var new_dish = AV.Object.new('Dish');
       console.log('create the dish and return it');
-      jsondata['id'] = 'new_dish_' + +new Date();
-      callback && callback(jsondata);
+      new_dish.save(dish, {
+        success: function(dish_object) {
+          callback && callback(JSON.parse(JSON.stringify(dish_object)));
+        }
+      });
     },
     'query': function(callback) {
       var dishes = [
@@ -48,9 +54,15 @@ api.factory('DishAPI', function() {
 });
 api.factory('MenuAPI', function() {
   return {
-    'create': function(callback) {
-      console.log('create a new menu');
-      callback && callback({'id': 'new_menu_' + +new Date(), 'dishes': []})
+    'create': function(menu, callback) {
+      var new_menu = AV.Object.new('Menu');
+      console.log('create the menu and return it');
+      new_menu.set('dishes', JSON.stringify(menu.dishes));
+      new_menu.save(null, {
+        success: function(menu_object) {
+          callback && callback(JSON.parse(JSON.stringify(menu_object)));
+        }
+      });
     },
     'add_dish_to_menu': function(menu, dish, callback) {
       console.log('add dish to menu');
@@ -69,32 +81,14 @@ api.factory('MenuAPI', function() {
     },
     'query': function(menu_id, callback) {
       console.log('fetch menu with id');
-      var menu = {
-        id: 'menu_' + +new Date(),
-        dishes: [
-          {
-            'name': '香汁排骨饭汤套餐',
-            'price': 29.5,
-            'restaurant': '真功夫'
-          },
-          {
-            'name': '冬菇鸡腿饭汤套餐',
-            'price': 27,
-            'restaurant': '真功夫'
-          },
-          {
-            'name': '鱼香茄子饭汤套餐',
-            'price': 20,
-            'restaurant': '真功夫'
-          },
-          {
-            'name': '排骨拼鸡腿肉饭汤套餐',
-            'price': 30.5,
-            'restaurant': '真功夫'
-          }
-        ]
-      };
-      callback && callback(menu);
+      var query = new AV.Query(Menu);
+      query.get(menu_id, {
+        success: function(menu_object) {
+          var plain_menu = JSON.parse(JSON.stringify(menu_object));
+          plain_menu.dishes = JSON.parse(plain_menu.dishes);
+          callback && callback(plain_menu);
+        }
+      });
     }
   }
 });
@@ -102,67 +96,46 @@ api.factory('OrderAPI', function() {
   return {
     create: function(order, callback) {
       console.log('create order');
-      console.log(order);
-      order.id = 'order_' + +new Date();
-      callback && callback(order);
+
+      var parent_menu = new Menu();
+      parent_menu.id = order.menu.objectId;
+
+      var new_order = new Order();
+      new_order.set('menu', parent_menu);
+      new_order.set('dishes', JSON.stringify(order.menu.dishes))
+      new_order.set('name', order.name);
+      new_order.set('memo', order.memo);
+      new_order.save(null, {
+        success: function(order_object) {
+          callback && callback(order_object);
+        }
+      });
     },
     order_list: function(menu_id, callback) {
       console.log('fetch order list from ' + menu_id);
-      var dishes = [
-        {
-          'name': '香汁排骨饭汤套餐',
-          'price': 29.5,
-          'restaurant': '真功夫',
-          'username': '燃辉',
-          'memo': ''
-        },
-        {
-          'name': '香汁排骨饭汤套餐',
-          'price': 29.5,
-          'restaurant': '真功夫',
-          'username': '团长',
-          'memo': '不要辣'
-        },
-        {
-          'name': '冬菇鸡腿饭汤套餐',
-          'price': 27,
-          'restaurant': '真功夫',
-          'username': '汤川学',
-          'memo': '不要香菜'
-        },
-        {
-          'name': '鱼香茄子饭汤套餐',
-          'price': 20,
-          'restaurant': '真功夫',
-          'username': '书记',
-          'memo': '多点辣'
-        },
-        {
-          'name': '排骨拼鸡腿肉饭汤套餐',
-          'price': 30.5,
-          'restaurant': '真功夫',
-          'username': '尧姐',
-          'memo': '不要韭菜'
-        },
-        {
-          'name': '排骨拼鸡腿肉饭汤套餐',
-          'price': 30.5,
-          'restaurant': '真功夫',
-          'username': '姐夫',
-          'memo': '不要辣'
-        },
-        {
-          'name': '排骨拼鸡腿肉饭汤套餐',
-          'price': 30.5,
-          'restaurant': '真功夫',
-          'username': '缝哥',
-          'memo': '不要辣'
+      var parent_menu = new Menu();
+      parent_menu.id = menu_id;
+
+      var query = new AV.Query(Order);
+      query.equalTo('menu', parent_menu);
+      query.find({
+        success: function(orders) {
+          var plain_orders = [];
+          angular.forEach(orders, function(order) {
+            var plain_order = JSON.parse(JSON.stringify(order));
+            plain_order.dishes = JSON.parse(plain_order.dishes);
+            plain_orders.push(plain_order);
+          });
+          callback && callback(plain_orders);
         }
-      ];
-      callback && callback(dishes);
+      })
     },
     update: function(order) {
       console.log('update order');
+      var order_object = new Order();
+      order_object.id = order.objectId;
+      order_object.set('paid', order.paid);
+      order_object.save();
     }
   }
 });

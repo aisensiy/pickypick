@@ -8,15 +8,15 @@
  * Controller of the pickypickApp
  */
 angular.module('pickypickApp')
-  .controller('MenuEditCtrl', ['$scope', 'DishAPI', 'MenuAPI', function ($scope, DishAPI, MenuAPI) {
+  .controller('MenuEditCtrl', ['$scope', '$location', 'DishAPI', 'MenuAPI', function ($scope, $location, DishAPI, MenuAPI) {
     DishAPI.query(function(dishes) {
       $scope.dishes = dishes;
     });
-    MenuAPI.create(function(menu) {
-      $scope.menu = menu;
-    })
     $scope.new_dish = {};
     $scope.selected = {};
+    $scope.menu = {
+      dishes: []
+    };
 
     $scope.add_new_dish = function() {
       MenuAPI.add_dish_to_menu($scope.menu, $scope.new_dish, function() {
@@ -36,6 +36,15 @@ angular.module('pickypickApp')
       }
       MenuAPI.add_dish_to_menu($scope.menu, Object.create(dish), function() {
         $scope.selected[dish.name] = true;
+      });
+    };
+
+    $scope.save_menu = function() {
+      MenuAPI.create($scope.menu, function(new_menu) {
+        $scope.$apply(function() {
+          console.log('wait to jump');
+          $location.path('/reservation/' + new_menu.objectId);
+        });
       });
     };
   }]);
