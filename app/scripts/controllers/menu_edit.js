@@ -34,8 +34,9 @@ angular.module('pickypickApp')
       if ($scope.selected[dish.name]) {
         return;
       }
-      MenuAPI.add_dish_to_menu($scope.menu, Object.create(dish), function() {
+      MenuAPI.add_dish_to_menu($scope.menu, dish, function() {
         $scope.selected[dish.name] = true;
+        console.log($scope.menu);
       });
     };
 
