@@ -45,7 +45,7 @@ angular.module('pickypickApp')
         $scope.$apply(function() {
           console.log('wait to jump');
           MenuAPI.set_cur_menu_id(new_menu);
-          $location.path('/reservation/' + MenuAPI.get_cur_menu_id());
+          $location.path('/create-order/' + MenuAPI.get_cur_menu_id());
           $rootScope.$broadcast('menu:create');
         });
       });

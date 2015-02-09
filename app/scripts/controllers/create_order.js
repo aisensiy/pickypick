@@ -2,13 +2,13 @@
 
 /**
  * @ngdoc function
- * @name pickypickApp.controller:ReservationCtrl
+ * @name pickypickApp.controller:CreateOrderCtrl
  * @description
- * # ReservationCtrl
+ * # CreateOrderCtrl
  * Controller of the pickypickApp
  */
 angular.module('pickypickApp')
-  .controller('ReservationCtrl', ['$scope', 'MenuAPI', 'OrderAPI', '$routeParams', function ($scope, MenuAPI, OrderAPI, $routeParams) {
+  .controller('CreateOrderCtrl', ['$scope', 'MenuAPI', 'OrderAPI', '$routeParams', function ($scope, MenuAPI, OrderAPI, $routeParams) {
     $scope.order = {};
     MenuAPI.query($routeParams.menu_id, function(menu) {
       $scope.$apply(function() {

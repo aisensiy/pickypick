@@ -28,9 +28,9 @@ angular
         templateUrl: 'views/menu-edit.html',
         controller: 'MenuEditCtrl'
       })
-      .when('/reservation/:menu_id', {
-        templateUrl: 'views/reservation.html',
-        controller: 'ReservationCtrl'
+      .when('/create-order/:menu_id', {
+        templateUrl: 'views/create-order.html',
+        controller: 'CreateOrderCtrl'
       })
       .when('/dish-stat/:menu_id', {
         templateUrl: 'views/dish-stat.html',
