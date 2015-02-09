@@ -89,6 +89,12 @@ api.factory('MenuAPI', function() {
           callback && callback(plain_menu);
         }
       });
+    },
+    'set_cur_menu_id': function(menu) {
+      localStorage['cur_menu_id'] = menu.objectId;
+    },
+    'get_cur_menu_id': function() {
+      return localStorage['cur_menu_id'];
     }
   }
 });
