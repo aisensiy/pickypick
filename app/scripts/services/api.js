@@ -132,6 +132,10 @@ api.factory('OrderAPI', function() {
     },
     update: function(order) {
       console.log('update order');
+      var order_object = new Order();
+      order_object.id = order.objectId;
+      order_object.set('paid', order.paid);
+      order_object.save();
     }
   }
 });

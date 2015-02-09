@@ -15,7 +15,7 @@ angular.module('pickypickApp')
         $scope.orders = orders;
       });
     });
-    $scope.update_order_pay_info = function(dish) {
-      OrderAPI.update(dish);
+    $scope.update_order_pay_info = function(order) {
+      OrderAPI.update(order);
     };
   }]);
