@@ -101,8 +101,14 @@ api.factory('OrderAPI', function() {
       parent_menu.id = order.menu.objectId;
 
       var new_order = new Order();
+      var dishes_in_order = [];
+      angular.forEach(order.menu.dishes, function(dish) {
+        if (dish.count > 0) {
+          dishes_in_order.push(dish);
+        }
+      });
       new_order.set('menu', parent_menu);
-      new_order.set('dishes', JSON.stringify(order.menu.dishes))
+      new_order.set('dishes', JSON.stringify(dishes_in_order));
       new_order.set('name', order.name);
       new_order.set('memo', order.memo);
       new_order.save(null, {
