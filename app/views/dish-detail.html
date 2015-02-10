@@ -13,11 +13,12 @@
               <p class="price pull-right">￥{{dish.price}}</p>
             </li>
           </ul>
+          <div class="text-right">共 ￥{{order.total_price}}</div>
           <p>付款了吗 <input ng-model="order.paid" type="checkbox" name="" id="" ng-click="update_order_pay_info(order)" /></p>
         </div>
         </li>
       </ul>
-      <p class="text-right">共 ￥{{total_price}}</p>
+      <p class="text-right">共 ￥{{total_price}} | 已付 ￥{{total_paid}} | 还差 ￥{{total_price - total_paid}}</p>
     </div>
   </div>
 </div>
