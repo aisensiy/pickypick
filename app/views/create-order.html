@@ -5,16 +5,13 @@
       <div class="check-dishes-panel">
         <ul class="list-unstyled">
           <li ng-repeat="dish in dishes">
-          <div class="well clearfix">
-            <p class="title pull-left">[{{dish.restaurant}}] {{dish.name}}</p>
-            <p class="price pull-right">￥{{dish.price}}</p>
-            <div class="clearfix"></div>
+          <dish dish="dish">
             <div class="pull-right">
               <a class="btn btn-default rounded" ng-click="count_plus(dish)"><i class="glyphicon glyphicon-plus" ></i></a>
               <input type="text" class="count" value="0" ng-model="dish.count">
               <a class="btn btn-default rounded" ng-click="count_minus(dish)"><i class="glyphicon glyphicon-minus"></i></a>
             </div>
-          </div>
+          </dish>
           </li>
         </ul>
         <div class="form-group">
