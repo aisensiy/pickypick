@@ -17,9 +17,17 @@ angular.module('pickypickApp')
           angular.forEach(order.dishes, function(dish) {
             var name = "[" + dish.restaurant + "]" + dish.name;
             if (!$scope.dish_stat[name]) {
-              $scope.dish_stat[name] = [dish];
+              $scope.dish_stat[name] = {
+                dishes: [dish],
+                memos: {}
+              };
             } else {
-              $scope.dish_stat[name].push(dish);
+              $scope.dish_stat[name].dishes.push(dish);
+            }
+            if ($scope.dish_stat[name].memos[order.memo]) {
+              $scope.dish_stat[name].memos[order.memo] += 1;
+            } else if (order.memo) {
+              $scope.dish_stat[name].memos[order.memo] = 1;
             }
             $scope.total_price += dish.price;
           });
