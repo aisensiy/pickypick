@@ -8,7 +8,7 @@
  * Controller of the pickypickApp
  */
 angular.module('pickypickApp')
-  .controller('CreateOrderCtrl', ['$scope', 'MenuAPI', 'OrderAPI', '$routeParams', function ($scope, MenuAPI, OrderAPI, $routeParams) {
+  .controller('CreateOrderCtrl', ['$location', '$scope', 'MenuAPI', 'OrderAPI', '$routeParams', function ($location, $scope, MenuAPI, OrderAPI, $routeParams) {
     $scope.total_price = 0;
     var get_total_price = function() {
       $scope.total_price = 0;
@@ -39,6 +39,10 @@ angular.module('pickypickApp')
 
     $scope.submit_order = function(order) {
       order.menu = $scope.menu;
-      OrderAPI.create(order);
+      OrderAPI.create(order, function() {
+        $scope.$apply(function() {
+          $location.path('/order-created');
+        });
+      });
     };
   }]);

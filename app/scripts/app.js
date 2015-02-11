@@ -40,6 +40,9 @@ angular
         templateUrl: 'views/dish-detail.html',
         controller: 'DishDetailCtrl'
       })
+      .when('/order-created', {
+        templateUrl: 'views/order-created-message.html'
+      })
       .otherwise({
         redirectTo: '/'
       });
