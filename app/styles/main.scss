@@ -104,3 +104,21 @@ body {
   width: 2em;
   text-align: center;
 }
+
+.font-lg {
+  font-size: 2em;
+}
+
+.font-md {
+  font-size: 1.2em;
+}
+
+.description {
+  i {
+    padding-right: 1em;
+  }
+  .lead span {
+    display: inline-block;
+    width: 4em;
+  }
+}

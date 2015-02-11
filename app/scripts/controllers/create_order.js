@@ -2,13 +2,20 @@
 
 /**
  * @ngdoc function
- * @name pickypickApp.controller:ReservationCtrl
+ * @name pickypickApp.controller:CreateOrderCtrl
  * @description
- * # ReservationCtrl
+ * # CreateOrderCtrl
  * Controller of the pickypickApp
  */
 angular.module('pickypickApp')
-  .controller('ReservationCtrl', ['$scope', 'MenuAPI', 'OrderAPI', '$routeParams', function ($scope, MenuAPI, OrderAPI, $routeParams) {
+  .controller('CreateOrderCtrl', ['$location', '$scope', 'MenuAPI', 'OrderAPI', '$routeParams', function ($location, $scope, MenuAPI, OrderAPI, $routeParams) {
+    $scope.total_price = 0;
+    var get_total_price = function() {
+      $scope.total_price = 0;
+      $scope.dishes.forEach(function(dish) {
+        $scope.total_price += dish.count * dish.price;
+      });
+    };
     $scope.order = {};
     MenuAPI.query($routeParams.menu_id, function(menu) {
       $scope.$apply(function() {
@@ -22,14 +29,20 @@ angular.module('pickypickApp')
 
     $scope.count_plus = function(dish) {
       dish.count += 1;
+      get_total_price();
     };
     $scope.count_minus = function(dish) {
       if (dish.count <= 0) return;
       dish.count -= 1;
+      get_total_price();
     };
 
     $scope.submit_order = function(order) {
       order.menu = $scope.menu;
-      OrderAPI.create(order);
+      OrderAPI.create(order, function() {
+        $scope.$apply(function() {
+          $location.path('/order-created');
+        });
+      });
     };
   }]);

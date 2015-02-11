@@ -1,7 +1,8 @@
 <div class="row">
-  <div class="col-md-6 col-md-offset-3">
+  <div class="col-md-8 col-md-offset-2">
     <h2>点餐详情</h2>
     <div class="check-dishes-panel">
+      <div class="well text-center" ng-hide="total_price">还没有人点餐呢</div>
       <ul class="list-unstyled">
         <li ng-repeat="order in orders">
         <div class="well">
@@ -12,10 +13,13 @@
               <p class="price pull-right">￥{{dish.price}}</p>
             </li>
           </ul>
+          <div class="text-right">共 ￥{{order.total_price}}</div>
+          <p ng-show="order.memo">备注: {{order.memo}}</p>
           <p>付款了吗 <input ng-model="order.paid" type="checkbox" name="" id="" ng-click="update_order_pay_info(order)" /></p>
         </div>
         </li>
       </ul>
+      <p class="text-right">共 ￥{{total_price}} | 已付 ￥{{total_paid}} | 还差 ￥{{total_price - total_paid}}</p>
     </div>
   </div>
 </div>

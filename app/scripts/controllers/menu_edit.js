@@ -8,7 +8,7 @@
  * Controller of the pickypickApp
  */
 angular.module('pickypickApp')
-  .controller('MenuEditCtrl', ['$scope', '$location', 'DishAPI', 'MenuAPI', function ($scope, $location, DishAPI, MenuAPI) {
+  .controller('MenuEditCtrl', ['$rootScope', '$scope', '$location', 'DishAPI', 'MenuAPI', function ($rootScope, $scope, $location, DishAPI, MenuAPI) {
     DishAPI.query(function(dishes) {
       $scope.dishes = dishes;
     });
@@ -44,7 +44,9 @@ angular.module('pickypickApp')
       MenuAPI.create($scope.menu, function(new_menu) {
         $scope.$apply(function() {
           console.log('wait to jump');
-          $location.path('/reservation/' + new_menu.objectId);
+          MenuAPI.set_cur_menu_id(new_menu);
+          $location.path('/create-order/' + MenuAPI.get_cur_menu_id());
+          $rootScope.$broadcast('menu:create');
         });
       });
     };

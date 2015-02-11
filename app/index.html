@@ -20,7 +20,7 @@
     <![endif]-->
 
     <!-- navbar -->
-    <div class="navbar navbar-default navbar-static-top">
+    <div class="navbar navbar-default navbar-static-top" ng-controller="NavBarCtrl as nav_bar">
       <div class="container">
         <div class="navbar-header">
           <a class="navbar-brand" href="#">Brand</a>
@@ -32,11 +32,11 @@
           </button>
         </div>
         <ul class="nav navbar-nav navbar-right collapse navbar-collapse">
-          <li><a href="#">Home</a></li>
+          <li><a href="#/">首页</a></li>
           <li><a href="#/newmenu">创建菜单</a></li>
-          <li><a href="#/reservation">订餐页面</a></li>
-          <li><a href="#/dish-stat">订餐统计</a></li>
-          <li><a href="#/dish-detail">订餐详情</a></li>
+          <li ng-show="menu_id"><a ng-href="#/create-order/{{menu_id}}">订餐页面</a></li>
+          <li ng-show="menu_id"><a href="#/dish-stat/{{menu_id}}">订餐统计</a></li>
+          <li ng-show="menu_id"><a href="#/dish-detail/{{menu_id}}">订餐详情</a></li>
         </ul>
       </div>
     </div>
@@ -91,10 +91,12 @@
         <script src="scripts/controllers/main.js"></script>
         <script src="scripts/controllers/about.js"></script>
         <script src="scripts/controllers/menu_edit.js"></script>
-        <script src="scripts/controllers/reservation.js"></script>
+        <script src="scripts/controllers/create_order.js"></script>
         <script src="scripts/controllers/dish-stat.js"></script>
         <script src="scripts/controllers/dish_detail.js"></script>
         <script src="scripts/services/api.js"></script>
+        <script src="scripts/controllers/nav_bar.js"></script>
+        <script src="scripts/directives/dish.js"></script>
         <!-- endbuild -->
 </body>
 </html>

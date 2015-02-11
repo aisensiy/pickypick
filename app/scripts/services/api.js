@@ -89,6 +89,12 @@ api.factory('MenuAPI', function() {
           callback && callback(plain_menu);
         }
       });
+    },
+    'set_cur_menu_id': function(menu) {
+      localStorage['cur_menu_id'] = menu.objectId;
+    },
+    'get_cur_menu_id': function() {
+      return localStorage['cur_menu_id'];
     }
   }
 });
@@ -136,12 +142,16 @@ api.factory('OrderAPI', function() {
         }
       })
     },
-    update: function(order) {
+    update: function(order, callback) {
       console.log('update order');
       var order_object = new Order();
       order_object.id = order.objectId;
       order_object.set('paid', order.paid);
-      order_object.save();
+      order_object.save(null, {
+        success: function(order_obj) {
+          callback && callback(order_obj);
+        }
+      });
     }
   }
 });

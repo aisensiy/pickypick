@@ -1,12 +1,19 @@
 <div class="row">
-  <div class="col-md-6 col-md-offset-3">
+  <div class="col-md-8 col-md-offset-2">
     <h2>订餐汇总</h2>
     <div class="check-dishes-panel">
+      <div class="well text-center" ng-hide="total_price">还没有人点餐呢</div>
       <ul class="list-unstyled">
-        <li ng-repeat="(name, dishes) in dish_stat">
-        <div class="well">
-          <h4 class="title">[{{dishes[0].restaurant}}] {{dishes[0].name}} x {{dishes.length}}</h4>
-          <p class="price">￥{{dishes[0].price * dishes.length}}</p>
+        <li ng-repeat="(name, stat) in dish_stat">
+        <div class="well clearfix">
+          <p class="title pull-left">[{{stat.dishes[0].restaurant}}] {{stat.dishes[0].name}} x {{stat.dishes.length}}</h4>
+          <p class="price pull-right">￥{{stat.dishes[0].price * stat.dishes.length}}</p>
+          <div class="clearfix"></div>
+          <p>
+          <span ng-repeat="(memo, count) in stat.memos">
+            {{memo}} x {{count}}
+          </span>
+          </p>
         </div>
         </li>
       </ul>

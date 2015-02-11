@@ -4,11 +4,9 @@
     <div class="selected-dishes-panel">
       <ul class='list-unstyled'>
         <li ng-repeat='dish in dishes'>
-          <div class="well">
-            <h4 class="title">[{{dish.restaurant}}] {{dish.name}}</h4>
-            <p class="price">￥{{dish.price}}</p>
-            <button class="btn btn-primary btn-sm" ng-click="copy_to_menu(dish)" ng-disabled="selected[dish.name]">移过去</button>
-          </div>
+        <dish dish="dish">
+          <button class="btn btn-primary btn-sm" ng-click="copy_to_menu(dish)" ng-disabled="selected[dish.name]">移过去</button>
+        </dish>
         </li>
       </ul>
     </div>
@@ -17,13 +15,14 @@
     <h2>编辑菜单</h2>
     <form ng-submit="save_menu()">
       <div class="selected-dishes-panel">
-        <ul class='list-unstyled'>
+        <div class="well text-center" ng-hide="menu.dishes.length">
+          菜单还是空的
+        </div>
+        <ul class='list-unstyled' ng-show="menu.dishes.length">
           <li ng-repeat='dish in menu.dishes'>
-          <div class="well">
-            <h4 class="title">[{{dish.restaurant}}] {{dish.name}}</h4>
-            <p class="price">￥{{dish.price}}</p>
+          <dish dish="dish">
             <button class="btn btn-default btn-sm"ng-click="remove_dish(dish)"><i class="glyphicon glyphicon-trash"></i></button>
-          </div>
+          </dish>
           </li>
         </ul>
       </div>
