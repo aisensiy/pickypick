@@ -34,10 +34,14 @@ angular.module('pickypickApp')
       });
     });
     $scope.update_order_pay_info = function(order) {
-      OrderAPI.update(order, function() {
-        $scope.$apply(function() {
-          update_total_paid();
+      if (confirm('这尼玛不能乱改的哦，你确定吗')) {
+        OrderAPI.update(order, function() {
+          $scope.$apply(function() {
+            update_total_paid();
+          });
         });
-      });
+      } else {
+        order.paid = !order.paid;
+      }
     };
   }]);
