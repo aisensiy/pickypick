@@ -17,13 +17,11 @@ angular.module('pickypickApp')
       });
     };
     $scope.order = {};
-    MenuAPI.query($routeParams.menu_id, function(menu) {
-      $scope.$apply(function() {
-        $scope.menu = menu;
-        $scope.dishes = menu.dishes;
-        $scope.dishes.forEach(function(dish) {
-          dish.count = 0;
-        });
+    MenuAPI.query($routeParams.menu_id).success(function(menu) {
+      $scope.menu = menu;
+      $scope.dishes = menu.dishes;
+      $scope.dishes.forEach(function(dish) {
+        dish.count = 0;
       });
     });
 
@@ -39,10 +37,8 @@ angular.module('pickypickApp')
 
     $scope.submit_order = function(order) {
       order.menu = $scope.menu;
-      OrderAPI.create(order, function() {
-        $scope.$apply(function() {
-          $location.path('/order-created');
-        });
+      OrderAPI.create(order).success(function(data) {
+        $location.path('/order-created');
       });
     };
   }]);

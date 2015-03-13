@@ -41,13 +41,10 @@ angular.module('pickypickApp')
     };
 
     $scope.save_menu = function() {
-      MenuAPI.create($scope.menu, function(new_menu) {
-        $scope.$apply(function() {
-          console.log('wait to jump');
-          MenuAPI.set_cur_menu_id(new_menu);
-          $location.path('/create-order/' + MenuAPI.get_cur_menu_id());
-          $rootScope.$broadcast('menu:create');
-        });
+      MenuAPI.create($scope.menu).success(function(data) {
+        MenuAPI.set_cur_menu_id(data);
+        $location.path('/create-order/' + MenuAPI.get_cur_menu_id());
+        $rootScope.$broadcast('menu:create');
       });
     };
   }]);

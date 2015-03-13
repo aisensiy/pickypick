@@ -8,12 +8,11 @@
  * Service in the pickypickApp.
  */
 var api = angular.module('API', []);
-api.run(function () {
-    AV.initialize("s7absgjlh4excjqd1arsfcn89baq9at1i6nckwy46kdek17g", "gs53oj7hti92uxr13mgzi47v9nv7hexjrc3982dqs4d3iq6b");
-    console.log('initialize av api');
-    window.Menu = AV.Object.extend('Menu');
-    window.Order = AV.Object.extend('Order');
+api.run(function ($http) {
+  $http.defaults.headers.common['X-AVOSCloud-Application-Id'] = 's7absgjlh4excjqd1arsfcn89baq9at1i6nckwy46kdek17g'
+  $http.defaults.headers.common['X-AVOSCloud-Application-Key'] = 'gs53oj7hti92uxr13mgzi47v9nv7hexjrc3982dqs4d3iq6b'
 });
+
 api.factory('DishAPI', function() {
   return {
     'create': function(dish, callback) {
@@ -52,17 +51,10 @@ api.factory('DishAPI', function() {
     }
   }
 });
-api.factory('MenuAPI', function() {
+api.factory('MenuAPI', function($http) {
   return {
-    'create': function(menu, callback) {
-      var new_menu = AV.Object.new('Menu');
-      console.log('create the menu and return it');
-      new_menu.set('dishes', JSON.stringify(menu.dishes));
-      new_menu.save(null, {
-        success: function(menu_object) {
-          callback && callback(JSON.parse(JSON.stringify(menu_object)));
-        }
-      });
+    'create': function(menu) {
+      return $http.post('https://leancloud.cn/1.1/classes/Menu', menu)
     },
     'add_dish_to_menu': function(menu, dish, callback) {
       console.log('add dish to menu');
@@ -80,15 +72,7 @@ api.factory('MenuAPI', function() {
       callback && callback();
     },
     'query': function(menu_id, callback) {
-      console.log('fetch menu with id');
-      var query = new AV.Query(Menu);
-      query.get(menu_id, {
-        success: function(menu_object) {
-          var plain_menu = JSON.parse(JSON.stringify(menu_object));
-          plain_menu.dishes = JSON.parse(plain_menu.dishes);
-          callback && callback(plain_menu);
-        }
-      });
+      return $http.get('https://leancloud.cn/1.1/classes/Menu/' + menu_id);
     },
     'set_cur_menu_id': function(menu) {
       localStorage['cur_menu_id'] = menu.objectId;
@@ -98,60 +82,26 @@ api.factory('MenuAPI', function() {
     }
   }
 });
-api.factory('OrderAPI', function() {
+api.factory('OrderAPI', ['$http', function($http) {
   return {
     create: function(order, callback) {
-      console.log('create order');
-
-      var parent_menu = new Menu();
-      parent_menu.id = order.menu.objectId;
-
-      var new_order = new Order();
+      var menu = order.menu;
       var dishes_in_order = [];
-      angular.forEach(order.menu.dishes, function(dish) {
+      angular.forEach(menu.dishes, function(dish) {
         if (dish.count > 0) {
           dishes_in_order.push(dish);
         }
       });
-      new_order.set('menu', parent_menu);
-      new_order.set('dishes', JSON.stringify(dishes_in_order));
-      new_order.set('name', order.name);
-      new_order.set('memo', order.memo);
-      new_order.save(null, {
-        success: function(order_object) {
-          callback && callback(order_object);
-        }
-      });
+      order.dishes = dishes_in_order;
+      order.menu = {__type: 'Pointer', className: 'Menu', objectId: menu.objectId};
+      console.log(order);
+      return $http.post('https://leancloud.cn/1.1/classes/Order', order);
     },
     order_list: function(menu_id, callback) {
-      console.log('fetch order list from ' + menu_id);
-      var parent_menu = new Menu();
-      parent_menu.id = menu_id;
-
-      var query = new AV.Query(Order);
-      query.equalTo('menu', parent_menu);
-      query.find({
-        success: function(orders) {
-          var plain_orders = [];
-          angular.forEach(orders, function(order) {
-            var plain_order = JSON.parse(JSON.stringify(order));
-            plain_order.dishes = JSON.parse(plain_order.dishes);
-            plain_orders.push(plain_order);
-          });
-          callback && callback(plain_orders);
-        }
-      })
+      return $http.get('https://leancloud.cn/1.1/classes/Order?' + encodeURI('where={"menu":{"__type":"Pointer","className":"Menu","objectId":"' + menu_id + '"}}'));
     },
     update: function(order, callback) {
-      console.log('update order');
-      var order_object = new Order();
-      order_object.id = order.objectId;
-      order_object.set('paid', order.paid);
-      order_object.save(null, {
-        success: function(order_obj) {
-          callback && callback(order_obj);
-        }
-      });
+      return $http.put('https://leancloud.cn/1.1/classes/Order/' + order.objectId, { paid: order.paid });
     }
   }
-});
+}]);

@@ -20,25 +20,22 @@ angular.module('pickypickApp')
         }
       });
     };
-    OrderAPI.order_list($routeParams.menu_id, function(orders) {
-      $scope.$apply(function() {
-        $scope.orders = orders;
-        angular.forEach($scope.orders, function(order) {
-          order.total_price = 0;
-          angular.forEach(order.dishes, function(dish) {
-            $scope.total_price += dish.price;
-            order.total_price += dish.price;
-          });
+    OrderAPI.order_list($routeParams.menu_id).success(function(data) {
+      var orders = data.results;
+      $scope.orders = orders;
+      angular.forEach($scope.orders, function(order) {
+        order.total_price = 0;
+        angular.forEach(order.dishes, function(dish) {
+          $scope.total_price += dish.price;
+          order.total_price += dish.price;
         });
-        update_total_paid();
       });
+      update_total_paid();
     });
     $scope.update_order_pay_info = function(order) {
       if (confirm('这尼玛不能乱改的哦，你确定吗')) {
-        OrderAPI.update(order, function() {
-          $scope.$apply(function() {
-            update_total_paid();
-          });
+        OrderAPI.update(order).success(function(data) {
+          update_total_paid();
         });
       } else {
         order.paid = !order.paid;
